@@ -176,7 +176,7 @@ namespace NeuralNetwork1
             get => samples[i];
             set => samples[i] = value;
         }
-
+        // получаем сет в случайном порядке
         public void shuffle()
         {
             samples.Shuffle();

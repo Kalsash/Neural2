@@ -41,7 +41,6 @@ namespace NeuralNetwork1
             }
         }
         
-        // Да, плохо. Но хотя бы так...
         private const string databaseLocation = "..\\..\\dataset";
         private Random random;
         public int LetterCount { get; set; }
@@ -77,12 +76,12 @@ namespace NeuralNetwork1
                 for (int i = 0; i < 100; i++)
                 {
                     var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
-                    double[] input = new double[200];
+                    double[] input = new double[300];
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
-                        for (int x = 0; x < 200; x++)
+                        for (int x = 0; x < 300; x++)
                         {
-                            for (int y = 0; y < 200; y++)
+                            for (int y = 0; y < 300; y++)
                             {
                                 if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                 {
@@ -107,12 +106,12 @@ namespace NeuralNetwork1
                 for (int i = 0; i < count/LetterCount; i++)
                 {
                     var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
-                    double[] input = new double[200];
+                    double[] input = new double[300];
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
-                        for (int x = 0; x < 200; x++)
+                        for (int x = 0; x < 300; x++)
                         {
-                            for (int y = 0; y < 200; y++)
+                            for (int y = 0; y < 300; y++)
                             {
                                 if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                 {
@@ -132,13 +131,13 @@ namespace NeuralNetwork1
         {
             var type = (LetterType) random.Next(LetterCount);
             var sample = structure[type][random.Next(structure[type].Count)];
-            double[] input = new double[200];
+            double[] input = new double[300];
             var bitmap = new Bitmap(sample);
             using (FastBitmap fb = new FastBitmap(bitmap))
             {
-                for (int x = 0; x < 200; x++)
+                for (int x = 0; x < 300; x++)
                 {
-                    for (int y = 0; y < 200; y++)
+                    for (int y = 0; y < 300; y++)
                     {
                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
                         {
@@ -152,12 +151,12 @@ namespace NeuralNetwork1
 
         public Sample getSample(Bitmap bitmap)
         {
-            double[] input = new double[200];
+            double[] input = new double[300];
             using (FastBitmap fb = new FastBitmap(bitmap))
             {
-                for (int x = 0; x < 200; x++)
+                for (int x = 0; x < 300; x++)
                 {
-                    for (int y = 0; y < 200; y++)
+                    for (int y = 0; y < 300; y++)
                     {
                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
                         {
