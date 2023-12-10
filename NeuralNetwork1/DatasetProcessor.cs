@@ -94,14 +94,28 @@ namespace NeuralNetwork1
 
                                 for (int x = startX; x < endX; x++)
                                 {
+                                    int currentSequence = 0;
+                                    int maxSequence = 0;
+
                                     for (int y = startY; y < endY; y++)
                                     {
                                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                         {
-                                            int blockIndex = blockX * blockWidth + blockY;
-                                            input[blockIndex]++;
+                                            currentSequence++;
+
+                                            if (currentSequence > maxSequence)
+                                            {
+                                                maxSequence = currentSequence;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            currentSequence = 0;
                                         }
                                     }
+
+                                    int blockIndex = blockX * blockWidth + blockY;
+                                    input[blockIndex] = maxSequence;
                                 }
                             }
                         }
@@ -140,14 +154,28 @@ namespace NeuralNetwork1
 
                                 for (int x = startX; x < endX; x++)
                                 {
+                                    int currentSequence = 0;
+                                    int maxSequence = 0;
+
                                     for (int y = startY; y < endY; y++)
                                     {
                                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                         {
-                                            int blockIndex = blockX * blockWidth + blockY;
-                                            input[blockIndex]++;
+                                            currentSequence++;
+
+                                            if (currentSequence > maxSequence)
+                                            {
+                                                maxSequence = currentSequence;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            currentSequence = 0;
                                         }
                                     }
+
+                                    int blockIndex = blockX * blockWidth + blockY;
+                                    input[blockIndex] = maxSequence;
                                 }
                             }
                         }
@@ -181,14 +209,28 @@ namespace NeuralNetwork1
 
                         for (int x = startX; x < endX; x++)
                         {
+                            int currentSequence = 0;
+                            int maxSequence = 0;
+
                             for (int y = startY; y < endY; y++)
                             {
                                 if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                 {
-                                    int blockIndex = blockX * blockWidth + blockY;
-                                    input[blockIndex]++;
+                                    currentSequence++;
+
+                                    if (currentSequence > maxSequence)
+                                    {
+                                        maxSequence = currentSequence;
+                                    }
+                                }
+                                else
+                                {
+                                    currentSequence = 0;
                                 }
                             }
+
+                            int blockIndex = blockX * blockWidth + blockY;
+                            input[blockIndex] = maxSequence;
                         }
                     }
                 }
@@ -214,14 +256,28 @@ namespace NeuralNetwork1
 
                         for (int x = startX; x < endX; x++)
                         {
+                            int currentSequence = 0;
+                            int maxSequence = 0;
+
                             for (int y = startY; y < endY; y++)
                             {
                                 if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                 {
-                                    int blockIndex = blockX * blockWidth + blockY;
-                                    input[blockIndex]++;
+                                    currentSequence++;
+
+                                    if (currentSequence > maxSequence)
+                                    {
+                                        maxSequence = currentSequence;
+                                    }
+                                }
+                                else
+                                {
+                                    currentSequence = 0;
                                 }
                             }
+
+                            int blockIndex = blockX * blockWidth + blockY;
+                            input[blockIndex] = maxSequence;
                         }
                     }
                 }
