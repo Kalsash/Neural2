@@ -72,8 +72,8 @@ namespace NeuralNetwork1
         {
             // for (int i = 0; i < 100; i++)
             SamplesSet set = new SamplesSet();
-            int blockWidth = 30;
-            int blockHeight = 10;
+            int blockWidth = 10;
+            int blockHeight = 30;
             for (int type = 0; type < LetterCount; type++)
             {
                 for (int i = 0; i < 100; i++)
@@ -83,9 +83,9 @@ namespace NeuralNetwork1
 
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
-                        for (int blockX = 0; blockX < 10; blockX++)
+                        for (int blockX = 0; blockX < blockHeight; blockX++)
                         {
-                            for (int blockY = 0; blockY < 30; blockY++)
+                            for (int blockY = 0; blockY < blockWidth; blockY++)
                             {
                                 int startX = blockX * blockWidth;
                                 int startY = blockY * blockHeight;
@@ -98,7 +98,7 @@ namespace NeuralNetwork1
                                     {
                                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                         {
-                                            int blockIndex = blockX * 30 + blockY;
+                                            int blockIndex = blockX * blockWidth + blockY;
                                             input[blockIndex]++;
                                         }
                                     }
@@ -117,8 +117,8 @@ namespace NeuralNetwork1
         public SamplesSet getTrainDataset(int count)
         {
             SamplesSet set = new SamplesSet();
-            int blockWidth = 30;
-            int blockHeight = 10;
+            int blockWidth = 10;
+            int blockHeight = 30;
 
             for (int type = 0; type < LetterCount; type++)
             {
@@ -129,9 +129,9 @@ namespace NeuralNetwork1
 
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
-                        for (int blockX = 0; blockX < 10; blockX++)
+                        for (int blockX = 0; blockX < blockHeight; blockX++)
                         {
-                            for (int blockY = 0; blockY < 30; blockY++)
+                            for (int blockY = 0; blockY < blockWidth; blockY++)
                             {
                                 int startX = blockX * blockWidth;
                                 int startY = blockY * blockHeight;
@@ -144,7 +144,7 @@ namespace NeuralNetwork1
                                     {
                                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                         {
-                                            int blockIndex = blockX * 30 + blockY;
+                                            int blockIndex = blockX * blockWidth + blockY;
                                             input[blockIndex]++;
                                         }
                                     }
@@ -166,15 +166,29 @@ namespace NeuralNetwork1
             var sample = structure[type][random.Next(structure[type].Count)];
             double[] input = new double[300];
             var bitmap = new Bitmap(sample);
-            using (FastBitmap fb = new FastBitmap(bitmap))
+            int blockWidth = 10;
+            int blockHeight = 30;
+            using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
             {
-                for (int x = 0; x < 300; x++)
+                for (int blockX = 0; blockX < blockHeight; blockX++)
                 {
-                    for (int y = 0; y < 300; y++)
+                    for (int blockY = 0; blockY < blockWidth; blockY++)
                     {
-                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                        int startX = blockX * blockWidth;
+                        int startY = blockY * blockHeight;
+                        int endX = startX + blockWidth;
+                        int endY = startY + blockHeight;
+
+                        for (int x = startX; x < endX; x++)
                         {
-                            input[x]++;
+                            for (int y = startY; y < endY; y++)
+                            {
+                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                                {
+                                    int blockIndex = blockX * blockWidth + blockY;
+                                    input[blockIndex]++;
+                                }
+                            }
                         }
                     }
                 }
@@ -185,15 +199,29 @@ namespace NeuralNetwork1
         public Sample getSample(Bitmap bitmap)
         {
             double[] input = new double[300];
+            int blockWidth = 10;
+            int blockHeight = 30;
             using (FastBitmap fb = new FastBitmap(bitmap))
             {
-                for (int x = 0; x < 300; x++)
+                for (int blockX = 0; blockX < blockHeight; blockX++)
                 {
-                    for (int y = 0; y < 300; y++)
+                    for (int blockY = 0; blockY < blockWidth; blockY++)
                     {
-                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                        int startX = blockX * blockWidth;
+                        int startY = blockY * blockHeight;
+                        int endX = startX + blockWidth;
+                        int endY = startY + blockHeight;
+
+                        for (int x = startX; x < endX; x++)
                         {
-                            input[x]++;
+                            for (int y = startY; y < endY; y++)
+                            {
+                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                                {
+                                    int blockIndex = blockX * blockWidth + blockY;
+                                    input[blockIndex]++;
+                                }
+                            }
                         }
                     }
                 }
