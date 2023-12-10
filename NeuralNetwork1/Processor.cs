@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using Accord.Math;
 
 namespace NeuralNetwork1
 {
@@ -166,9 +167,19 @@ namespace NeuralNetwork1
 
                 Rectangle[] rects = bc.GetObjectsRectangles();
                 rez = "Насчитали " + rects.Length.ToString() + " прямоугольников!";
-                //if (rects.Length > 10) { return false; };
+                if (rects.Length > 10) 
+                {
+                    return false; 
+                };
                 // Частично уменьшаем границы прямоугольника для охвата только блобов
-                int step = 200;
+                int step = 400;
+                if (rects.Length <= 1)
+                    return false;
+                foreach (Rectangle r in rects) 
+                {
+                    if (r.Width == 500)
+                        rects.RemoveAt(rects.IndexOf(r));
+                }
                 Rectangle biggest_Rect = new Rectangle(rects[1].X - step / 2, rects[1].Y - step / 2, rects[1].Width + step, rects[1].Height + step);
                 if (rects[0].Width != 500)
                 {
