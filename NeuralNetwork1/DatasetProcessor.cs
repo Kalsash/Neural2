@@ -70,56 +70,43 @@ namespace NeuralNetwork1
         // Здесь мы полагаемся чисто на рандом
         public SamplesSet getTestDataset(int count)
         {
+            // for (int i = 0; i < 100; i++)
             SamplesSet set = new SamplesSet();
+            int blockWidth = 30;
+            int blockHeight = 10;
             for (int type = 0; type < LetterCount; type++)
             {
                 for (int i = 0; i < 100; i++)
                 {
                     var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
-                    double[] input = new double[300];
+                    double[] input = new double[blockWidth * blockHeight];
+
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
-                        for (int x = 0; x < 300; x++)
+                        for (int blockX = 0; blockX < 10; blockX++)
                         {
-                            for (int y = 0; y < 300; y++)
+                            for (int blockY = 0; blockY < 30; blockY++)
                             {
-                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                                int startX = blockX * blockWidth;
+                                int startY = blockY * blockHeight;
+                                int endX = startX + blockWidth;
+                                int endY = startY + blockHeight;
+
+                                for (int x = startX; x < endX; x++)
                                 {
-                                    input[x]++;
+                                    for (int y = startY; y < endY; y++)
+                                    {
+                                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                                        {
+                                            int blockIndex = blockX * 30 + blockY;
+                                            input[blockIndex]++;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                    set.AddSample(new Sample(input, LetterCount, (LetterType)type));
-                }
-            }
-            set.shuffle();
-            return set;
-        }
-        
-        // А здесь пытаемся сделать что-то похожее на равномерность
-        public SamplesSet getTrainDataset(int count)
-        {
-            SamplesSet set = new SamplesSet();
-            for (int type = 0; type < LetterCount; type++)
-            {
-                for (int i = 0; i < count/LetterCount; i++)
-                {
-                    var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
-                    double[] input = new double[300];
-                    using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
-                    {
-                        for (int x = 0; x < 300; x++)
-                        {
-                            for (int y = 0; y < 300; y++)
-                            {
-                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
-                                {
-                                    input[x]++;
-                                }
-                            }
-                        }
-                    }
+
                     set.AddSample(new Sample(input, LetterCount, (LetterType)type));
                 }
             }
@@ -127,6 +114,52 @@ namespace NeuralNetwork1
             return set;
         }
 
+        public SamplesSet getTrainDataset(int count)
+        {
+            SamplesSet set = new SamplesSet();
+            int blockWidth = 30;
+            int blockHeight = 10;
+
+            for (int type = 0; type < LetterCount; type++)
+            {
+                for (int i = 0; i < count / LetterCount; i++)
+                {
+                    var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
+                    double[] input = new double[blockWidth * blockHeight];
+
+                    using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
+                    {
+                        for (int blockX = 0; blockX < 10; blockX++)
+                        {
+                            for (int blockY = 0; blockY < 30; blockY++)
+                            {
+                                int startX = blockX * blockWidth;
+                                int startY = blockY * blockHeight;
+                                int endX = startX + blockWidth;
+                                int endY = startY + blockHeight;
+
+                                for (int x = startX; x < endX; x++)
+                                {
+                                    for (int y = startY; y < endY; y++)
+                                    {
+                                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                                        {
+                                            int blockIndex = blockX * 30 + blockY;
+                                            input[blockIndex]++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    set.AddSample(new Sample(input, LetterCount, (LetterType)type));
+                }
+            }
+
+            set.shuffle();
+            return set;
+        }
         public Tuple<Sample, Bitmap> getSample()
         {
             var type = (LetterType) random.Next(LetterCount);
