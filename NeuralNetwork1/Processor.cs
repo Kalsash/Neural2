@@ -106,7 +106,8 @@ namespace NeuralNetwork1
             side -= 2 * settings.border;
 
             //  Мы сейчас занимаемся тем, что красиво оформляем входной кадр, чтобы вывести его на форму
-            Rectangle cropRect = new Rectangle((bitmap.Width - bitmap.Height) / 2 + settings.left + settings.border, settings.top + settings.border, side, side);
+            // Rectangle cropRect = new Rectangle((bitmap.Width - bitmap.Height) / 2 + settings.left + settings.border, settings.top + settings.border, side, side);
+            Rectangle cropRect = new Rectangle(settings.border, settings.border, bitmap.Width - settings.border, bitmap.Height - settings.border);
 
             //  Тут создаём новый битмапчик, который будет исходным изображением
             original = new Bitmap(cropRect.Width, cropRect.Height);
@@ -175,11 +176,7 @@ namespace NeuralNetwork1
                 int step = 400;
                 if (rects.Length <= 1)
                     return false;
-                foreach (Rectangle r in rects) 
-                {
-                    if (r.Width == 500)
-                        rects.RemoveAt(rects.IndexOf(r));
-                }
+
                 Rectangle biggest_Rect = new Rectangle(rects[1].X - step / 2, rects[1].Y - step / 2, rects[1].Width + step, rects[1].Height + step);
                 if (rects[0].Width != 500)
                 {

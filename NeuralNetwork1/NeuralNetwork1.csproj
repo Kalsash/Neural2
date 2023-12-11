@@ -117,6 +117,9 @@
     <Compile Include="StudentNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Camera.resx">
+      <DependentUpon>Camera.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NeuralNetworksStand.resx">
       <DependentUpon>NeuralNetworksStand.cs</DependentUpon>
     </EmbeddedResource>
