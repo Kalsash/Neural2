@@ -78,6 +78,8 @@ namespace NeuralNetwork1
                 {
                     var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
                     double[] input = new double[300];
+                    int row = 0;
+                    int f = 0;
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
                         for (int x = 0; x < 300; x++)
@@ -86,7 +88,26 @@ namespace NeuralNetwork1
                             {
                                 if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                 {
-                                    input[x]++;
+                                    if (x > 0 && f == 0)
+                                    {
+                                        row = x;
+                                        f++;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                    using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
+                    {
+                        for (int x = row; x < 300; x++)
+                        {
+                            for (int y = 0; y < 300; y++)
+                            {
+                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                                {
+                                    input[x - row]++;
                                 }
                             }
                         }
@@ -108,9 +129,8 @@ namespace NeuralNetwork1
                 {
                     var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
                     double[] input = new double[300];
-                    var m = new MagicEye();
-                    m.ProcessImage(new Bitmap(sample));
-                    var p = m.processed;
+                    int row = 0;
+                    int f = 0;
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
                         for (int x = 0; x < 300; x++)
@@ -119,7 +139,26 @@ namespace NeuralNetwork1
                             {
                                 if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                 {
-                                    input[x]++;
+                                    if (x > 0 && f == 0)
+                                    {
+                                        row = x;
+                                        f++;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                    using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
+                    {
+                        for (int x = row; x < 300; x++)
+                        {
+                            for (int y = 0; y < 300; y++)
+                            {
+                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                                {
+                                    input[x - row]++;
                                 }
                             }
                         }
@@ -136,6 +175,8 @@ namespace NeuralNetwork1
             var type = (LetterType)random.Next(LetterCount);
             var sample = structure[type][random.Next(structure[type].Count)];
             double[] input = new double[300];
+            int row = 0;
+            int f = 0;
             var bitmap = new Bitmap(sample);
             using (FastBitmap fb = new FastBitmap(bitmap))
             {
@@ -145,7 +186,25 @@ namespace NeuralNetwork1
                     {
                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
                         {
-                            input[x]++;
+                            if (x > 0 && f == 0)
+                            {
+                                row = x;
+                                f++;
+                            }
+
+                        }
+                    }
+                }
+            }
+            using (FastBitmap fb = new FastBitmap(bitmap))
+            {
+                for (int x = 0; x < 300; x++)
+                {
+                    for (int y = 0; y < 300; y++)
+                    {
+                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                        {
+                            input[x-row]++;
                         }
                     }
                 }
@@ -156,6 +215,8 @@ namespace NeuralNetwork1
         public Sample getSample(Bitmap bitmap)
         {
             double[] input = new double[300];
+            int row = 0;
+            int f = 0;
             using (FastBitmap fb = new FastBitmap(bitmap))
             {
                 for (int x = 0; x < 300; x++)
@@ -164,7 +225,22 @@ namespace NeuralNetwork1
                     {
                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
                         {
-                            input[x]++;
+                            if (x > 0 && f == 0)
+                            {
+                                row = x;
+                                f++;
+                            }
+
+                        }
+                    }
+                }
+                for (int x = 0; x < 300; x++)
+                {
+                    for (int y = 0; y < 300; y++)
+                    {
+                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                        {
+                            input[x-row]++;
                         }
                     }
                 }
