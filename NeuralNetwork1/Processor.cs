@@ -90,6 +90,9 @@ namespace NeuralNetwork1
             this.network = network;
             this.dataset = dataset;
         }
+        public MagicEye()
+        {
+        }
 
         public bool ProcessImage(Bitmap bitmap)
         {

@@ -40,7 +40,8 @@ namespace NeuralNetwork1
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
-        
+
+        // Да, плохо. Но хотя бы так...
         private const string databaseLocation = "..\\..\\dataset";
         private Random random;
         public int LetterCount { get; set; }
@@ -70,57 +71,26 @@ namespace NeuralNetwork1
         // Здесь мы полагаемся чисто на рандом
         public SamplesSet getTestDataset(int count)
         {
-            // for (int i = 0; i < 100; i++)
             SamplesSet set = new SamplesSet();
-            int blockWidth = 10;
-            int blockHeight = 30;
             for (int type = 0; type < LetterCount; type++)
             {
                 for (int i = 0; i < 100; i++)
                 {
                     var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
-                    double[] input = new double[blockWidth * blockHeight];
-
+                    double[] input = new double[300];
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
-                        for (int blockX = 0; blockX < blockHeight; blockX++)
+                        for (int x = 0; x < 300; x++)
                         {
-                            for (int blockY = 0; blockY < blockWidth; blockY++)
+                            for (int y = 0; y < 300; y++)
                             {
-                                int startX = blockX * blockWidth;
-                                int startY = blockY * blockHeight;
-                                int endX = startX + blockWidth;
-                                int endY = startY + blockHeight;
-
-                                for (int x = startX; x < endX; x++)
+                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                 {
-                                    int currentSequence = 0;
-                                    int maxSequence = 0;
-
-                                    for (int y = startY; y < endY; y++)
-                                    {
-                                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
-                                        {
-                                            currentSequence++;
-
-                                            if (currentSequence > maxSequence)
-                                            {
-                                                maxSequence = currentSequence;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            currentSequence = 0;
-                                        }
-                                    }
-
-                                    int blockIndex = blockX * blockWidth + blockY;
-                                    input[blockIndex] = maxSequence;
+                                    input[x]++;
                                 }
                             }
                         }
                     }
-
                     set.AddSample(new Sample(input, LetterCount, (LetterType)type));
                 }
             }
@@ -128,156 +98,73 @@ namespace NeuralNetwork1
             return set;
         }
 
+        // А здесь пытаемся сделать что-то похожее на равномерность
         public SamplesSet getTrainDataset(int count)
         {
             SamplesSet set = new SamplesSet();
-            int blockWidth = 10;
-            int blockHeight = 30;
-
             for (int type = 0; type < LetterCount; type++)
             {
                 for (int i = 0; i < count / LetterCount; i++)
                 {
                     var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
-                    double[] input = new double[blockWidth * blockHeight];
-
+                    double[] input = new double[300];
+                    var m = new MagicEye();
+                    m.ProcessImage(new Bitmap(sample));
+                    var p = m.processed;
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
-                        for (int blockX = 0; blockX < blockHeight; blockX++)
+                        for (int x = 0; x < 300; x++)
                         {
-                            for (int blockY = 0; blockY < blockWidth; blockY++)
-                            {
-                                int startX = blockX * blockWidth;
-                                int startY = blockY * blockHeight;
-                                int endX = startX + blockWidth;
-                                int endY = startY + blockHeight;
-
-                                for (int x = startX; x < endX; x++)
-                                {
-                                    int currentSequence = 0;
-                                    int maxSequence = 0;
-
-                                    for (int y = startY; y < endY; y++)
-                                    {
-                                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
-                                        {
-                                            currentSequence++;
-
-                                            if (currentSequence > maxSequence)
-                                            {
-                                                maxSequence = currentSequence;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            currentSequence = 0;
-                                        }
-                                    }
-
-                                    int blockIndex = blockX * blockWidth + blockY;
-                                    input[blockIndex] = maxSequence;
-                                }
-                            }
-                        }
-                    }
-
-                    set.AddSample(new Sample(input, LetterCount, (LetterType)type));
-                }
-            }
-
-            set.shuffle();
-            return set;
-        }
-        public Tuple<Sample, Bitmap> getSample()
-        {
-            var type = (LetterType) random.Next(LetterCount);
-            var sample = structure[type][random.Next(structure[type].Count)];
-            double[] input = new double[300];
-            var bitmap = new Bitmap(sample);
-            int blockWidth = 10;
-            int blockHeight = 30;
-            using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
-            {
-                for (int blockX = 0; blockX < blockHeight; blockX++)
-                {
-                    for (int blockY = 0; blockY < blockWidth; blockY++)
-                    {
-                        int startX = blockX * blockWidth;
-                        int startY = blockY * blockHeight;
-                        int endX = startX + blockWidth;
-                        int endY = startY + blockHeight;
-
-                        for (int x = startX; x < endX; x++)
-                        {
-                            int currentSequence = 0;
-                            int maxSequence = 0;
-
-                            for (int y = startY; y < endY; y++)
+                            for (int y = 0; y < 300; y++)
                             {
                                 if (fb[x, y].ToArgb() != Color.White.ToArgb())
                                 {
-                                    currentSequence++;
-
-                                    if (currentSequence > maxSequence)
-                                    {
-                                        maxSequence = currentSequence;
-                                    }
-                                }
-                                else
-                                {
-                                    currentSequence = 0;
+                                    input[x]++;
                                 }
                             }
+                        }
+                    }
+                    set.AddSample(new Sample(input, LetterCount, (LetterType)type));
+                }
+            }
+            set.shuffle();
+            return set;
+        }
 
-                            int blockIndex = blockX * blockWidth + blockY;
-                            input[blockIndex] = maxSequence;
+        public Tuple<Sample, Bitmap> getSample()
+        {
+            var type = (LetterType)random.Next(LetterCount);
+            var sample = structure[type][random.Next(structure[type].Count)];
+            double[] input = new double[300];
+            var bitmap = new Bitmap(sample);
+            using (FastBitmap fb = new FastBitmap(bitmap))
+            {
+                for (int x = 0; x < 300; x++)
+                {
+                    for (int y = 0; y < 300; y++)
+                    {
+                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                        {
+                            input[x]++;
                         }
                     }
                 }
             }
-            return Tuple.Create<Sample, Bitmap>(new Sample(input,LetterCount,type),bitmap);
+            return Tuple.Create<Sample, Bitmap>(new Sample(input, LetterCount, type), bitmap);
         }
 
         public Sample getSample(Bitmap bitmap)
         {
             double[] input = new double[300];
-            int blockWidth = 10;
-            int blockHeight = 30;
             using (FastBitmap fb = new FastBitmap(bitmap))
             {
-                for (int blockX = 0; blockX < blockHeight; blockX++)
+                for (int x = 0; x < 300; x++)
                 {
-                    for (int blockY = 0; blockY < blockWidth; blockY++)
+                    for (int y = 0; y < 300; y++)
                     {
-                        int startX = blockX * blockWidth;
-                        int startY = blockY * blockHeight;
-                        int endX = startX + blockWidth;
-                        int endY = startY + blockHeight;
-
-                        for (int x = startX; x < endX; x++)
+                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
                         {
-                            int currentSequence = 0;
-                            int maxSequence = 0;
-
-                            for (int y = startY; y < endY; y++)
-                            {
-                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
-                                {
-                                    currentSequence++;
-
-                                    if (currentSequence > maxSequence)
-                                    {
-                                        maxSequence = currentSequence;
-                                    }
-                                }
-                                else
-                                {
-                                    currentSequence = 0;
-                                }
-                            }
-
-                            int blockIndex = blockX * blockWidth + blockY;
-                            input[blockIndex] = maxSequence;
+                            input[x]++;
                         }
                     }
                 }
