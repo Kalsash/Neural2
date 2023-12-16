@@ -198,7 +198,7 @@ namespace NeuralNetwork1
             }
             using (FastBitmap fb = new FastBitmap(bitmap))
             {
-                for (int x = 0; x < 300; x++)
+                for (int x = row; x < 300; x++)
                 {
                     for (int y = 0; y < 300; y++)
                     {
@@ -234,7 +234,7 @@ namespace NeuralNetwork1
                         }
                     }
                 }
-                for (int x = 0; x < 300; x++)
+                for (int x = row; x < 300; x++)
                 {
                     for (int y = 0; y < 300; y++)
                     {
