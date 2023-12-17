@@ -80,10 +80,14 @@ namespace NeuralNetwork1
                     double[] input = new double[300];
                     int row = 0;
                     int f = 0;
+                    int blacklen = 0;
+                    int whitelen = 0;
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
                         for (int x = 1; x < 300; x++)
                         {
+                            if (x - row < 0 || x - row >= 300)
+                                break;
                             for (int y = 0; y < 300; y++)
                             {
                                 if (fb[x, y].ToArgb() != Color.White.ToArgb())
@@ -92,13 +96,50 @@ namespace NeuralNetwork1
                                     {
                                         row = x;
                                         f++;
+                                        whitelen = 0;
                                     }
+                                    if (f > 4)
+                                        break;
+
+
                                     input[x - row]++;
 
                                 }
                             }
+
+                            if (input[x - row] > 0)
+                            {
+
+                                if (whitelen > 0)
+                                {
+                                    if (blacklen >= 5)
+                                    {
+                                        row += blacklen + whitelen - 75;
+                                        f++;
+                                        blacklen = 0;
+                                        whitelen = 0;
+                                    }
+                                    else
+                                    {
+                                        blacklen = 0;
+                                        whitelen = 0;
+                                    }
+
+                                }
+                                else
+                                {
+                                    blacklen++;
+                                    whitelen = 0;
+                                }
+                            }
+                            else
+                            {
+                                whitelen++;
+                            }
                         }
+
                     }
+
                     set.AddSample(new Sample(input, LetterCount, (LetterType)type));
                 }
             }
@@ -118,10 +159,14 @@ namespace NeuralNetwork1
                     double[] input = new double[300];
                     int row = 0;
                     int f = 0;
+                    int blacklen = 0;
+                    int whitelen = 0;
                     using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
                         for (int x = 1; x < 300; x++)
                         {
+                            if (x - row < 0 || x - row >= 300)
+                                break;
                             for (int y = 0; y < 300; y++)
                             {
                                 if (fb[x, y].ToArgb() != Color.White.ToArgb())
@@ -130,13 +175,50 @@ namespace NeuralNetwork1
                                     {
                                         row = x;
                                         f++;
+                                        whitelen = 0;
                                     }
+                                    if (f > 4)
+                                        break;
+
+
                                     input[x - row]++;
 
                                 }
                             }
+
+                            if (input[x - row] > 0)
+                            {
+
+                                if (whitelen > 0)
+                                {
+                                    if (blacklen >= 5)
+                                    {
+                                        row += blacklen + whitelen - 75;
+                                        f++;
+                                        blacklen = 0;
+                                        whitelen = 0;
+                                    }
+                                    else
+                                    {
+                                        blacklen = 0;
+                                        whitelen = 0;
+                                    }
+
+                                }
+                                else 
+                                {
+                                    blacklen++;
+                                    whitelen = 0;
+                                }
+                            }
+                            else 
+                            {
+                                whitelen++;               
+                            }
                         }
+                      
                     }
+
                     set.AddSample(new Sample(input, LetterCount, (LetterType)type));
                 }
             }
@@ -151,11 +233,15 @@ namespace NeuralNetwork1
             double[] input = new double[300];
             int row = 0;
             int f = 0;
+            int blacklen = 0;
+            int whitelen = 0;
             var bitmap = new Bitmap(sample);
             using (FastBitmap fb = new FastBitmap(bitmap))
             {
                 for (int x = 1; x < 300; x++)
                 {
+                    if (x - row < 0 || x - row >= 300)
+                        break;
                     for (int y = 0; y < 300; y++)
                     {
                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
@@ -164,14 +250,49 @@ namespace NeuralNetwork1
                             {
                                 row = x;
                                 f++;
+                                whitelen = 0;
                             }
+                            if (f > 4)
+                                break;
+
+
                             input[x - row]++;
 
                         }
                     }
-                }
-            }
 
+                    if (input[x - row] > 0)
+                    {
+
+                        if (whitelen > 0)
+                        {
+                            if (blacklen >= 5)
+                            {
+                                row += blacklen + whitelen - 75;
+                                f++;
+                                blacklen = 0;
+                                whitelen = 0;
+                            }
+                            else
+                            {
+                                blacklen = 0;
+                                whitelen = 0;
+                            }
+
+                        }
+                        else
+                        {
+                            blacklen++;
+                            whitelen = 0;
+                        }
+                    }
+                    else
+                    {
+                        whitelen++;
+                    }
+                }
+
+            }
             return Tuple.Create<Sample, Bitmap>(new Sample(input, LetterCount, type), bitmap);
         }
 
@@ -180,10 +301,14 @@ namespace NeuralNetwork1
             double[] input = new double[300];
             int row = 0;
             int f = 0;
+            int blacklen = 0;
+            int whitelen = 0;
             using (FastBitmap fb = new FastBitmap(bitmap))
             {
                 for (int x = 1; x < 300; x++)
                 {
+                    if (x - row < 0 || x - row >= 300)
+                        break;
                     for (int y = 0; y < 300; y++)
                     {
                         if (fb[x, y].ToArgb() != Color.White.ToArgb())
@@ -192,12 +317,48 @@ namespace NeuralNetwork1
                             {
                                 row = x;
                                 f++;
+                                whitelen = 0;
                             }
+                            if (f > 4)
+                                break;
+
+
                             input[x - row]++;
 
                         }
                     }
+
+                    if (input[x - row] > 0)
+                    {
+
+                        if (whitelen > 0)
+                        {
+                            if (blacklen >= 5)
+                            {
+                                row += blacklen + whitelen - 75;
+                                f++;
+                                blacklen = 0;
+                                whitelen = 0;
+                            }
+                            else
+                            {
+                                blacklen = 0;
+                                whitelen = 0;
+                            }
+
+                        }
+                        else
+                        {
+                            blacklen++;
+                            whitelen = 0;
+                        }
+                    }
+                    else
+                    {
+                        whitelen++;
+                    }
                 }
+
             }
 
             return new Sample(input, LetterCount);
